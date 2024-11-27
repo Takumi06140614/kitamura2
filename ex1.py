@@ -37,7 +37,11 @@ for i in range(5, len(new_data)):
 for i in range(5,len(new_data)):
    cv2.circle(img,(int(new_data[i][0]),int(new_data[i][1])),5,(0,255,255),-1,cv2.LINE_8)
 
+cv2.imwrite('ex_draw.jpg',img )
+
 #imgの中身を表示する
 cv2.imshow("img",img)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
+
+
