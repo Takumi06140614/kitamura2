@@ -40,8 +40,8 @@ for i in range(5,len(new_data)):
 cv2.imwrite('ex_draw.jpg',img )
 
 #imgの中身を表示する
-cv2.imshow("img",img)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+# cv2.imshow("img",img)
+# cv2.waitKey(0)
+# cv2.destroyAllWindows()
 
 
