@@ -20,8 +20,8 @@ def calculate_angle(ax, ay, bx, by, cx, cy):
     # コサイン値を計算
     cos_theta = dot_product / (magnitude_ba * magnitude_bc)
 
-    # コサイン値の範囲をクリップ
-    cos_theta = max(-1.0, min(1.0, cos_theta))
+    # # コサイン値の範囲をクリップ
+    # cos_theta = max(-1.0, min(1.0, cos_theta))
 
     # 角度をラジアンで計算し、度に変換
     angle_radians = math.acos(cos_theta)
@@ -49,13 +49,14 @@ out = cv2.VideoWriter("output.mp4", fourcc, fps, (frame_width, frame_height))
 # フレーム番号を0にする
 cnt = 0
 
+angles = []
 # フレームを読み出す
 while cap.isOpened():
     success, frame = cap.read()
 
     if success:
         # フレーム番号をフレームに描画
-        cv2.putText(frame, str(cnt), (100, 300), cv2.FONT_HERSHEY_PLAIN, 4, (0, 0, 255), 4)
+        # cv2.putText(frame, str(cnt), (100, 300), cv2.FONT_HERSHEY_PLAIN, 4, (0, 0, 255), 4)
 
         # YOLOの設定
         results = model(frame)
@@ -80,7 +81,8 @@ while cap.isOpened():
             x += 2
 
         # 6-8,8-10の角度を求めて、80°～100°の場合に赤色にする
-        angle = calculate_angle(new_data[6][0], new_data[6][1], new_data[8][0], new_data[8][1], new_data[12][0], new_data[12][1])
+        angle = calculate_angle(new_data[8][0], new_data[8][1], new_data[6][0], new_data[6][1], new_data[12][0], new_data[12][1])
+        angles.append(angle)
         if 80 <= angle <= 100:
             # 赤色に変更
             start_point = (int(new_data[6][0]), int(new_data[6][1]))
@@ -89,14 +91,14 @@ while cap.isOpened():
             start_point = (int(new_data[8][0]), int(new_data[8][1]))
             end_point = (int(new_data[10][0]), int(new_data[10][1]))
             cv2.line(frame, start_point, end_point, (0, 0, 255), 3, cv2.LINE_8)
-
+        cv2.putText(frame, str(cnt), (100, 300), cv2.FONT_HERSHEY_PLAIN, 4, (0, 0, 255), 4)
         # フレーム番号をインクリメント
         cnt += 1
 
         # フレームを書き込む
         out.write(frame)
 
-        # フレームを表示
+        # # フレームを表示
         cv2.imshow("Frame", frame)
 
         # ESCキーで終了
@@ -105,6 +107,9 @@ while cap.isOpened():
     else:
         break
 
+# print(angles)
+matches = [i for i in range(len(angles)) if 80 <= angles[i] <= 100]
+print(matches)
 # リソースの解放
 cap.release()
 out.release()
