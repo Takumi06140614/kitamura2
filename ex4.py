@@ -29,6 +29,8 @@ for i in range(len(keypoints_data[0])):
 
 # フレーム番号を0にする
 cnt = 0
+cnt_f = 0
+min = 100
 
 # フレームを読み出す
 while cap.isOpened():
@@ -50,20 +52,17 @@ while cap.isOpened():
         new_data2 = []
         for i in range(len(keypoints_data[0])):
             new_data2.append(keypoints_data[0][i][:2])
-        
-        count = 0
-        
+
+        total = 0
         for i in range(len(keypoints_data[0])):
-            if new_data2[i][0]-new_data1[i][0] <= 0.1:
-                count = count + 1
-            if new_data2[i][1]-new_data1[i][1] <= 0.1:
-                count = count + 1
-        
-        cnt_final = 0
-        
-        if  count == 24:
-            cnt_final = cnt
-            break
+            x = abs(new_data2[i][0]-new_data1[i][0])
+            y = abs(new_data2[i][1]-new_data1[i][1])
+            total += x
+            total += y
+            
+        if total < min:
+            min = total
+            cnt_f = cnt
         
         # フレーム番号をインクリメント
         cnt += 1
@@ -74,7 +73,7 @@ while cap.isOpened():
     else:
         break
 
-print(cnt)
+print(cnt_f)
 
 # リソースの解放
 cap.release()
