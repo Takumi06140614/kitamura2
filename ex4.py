@@ -54,9 +54,9 @@ while cap.isOpened():
         count = 0
         
         for i in range(len(keypoints_data[0])):
-            if new_data2[i][0]-new_data1[i][0] <= 1:
+            if new_data2[i][0]-new_data1[i][0] <= 0.1:
                 count = count + 1
-            if new_data2[i][1]-new_data1[i][1] <= 1:
+            if new_data2[i][1]-new_data1[i][1] <= 0.1:
                 count = count + 1
         
         cnt_final = 0
